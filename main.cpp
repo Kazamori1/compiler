@@ -21,6 +21,7 @@ int main(){
     m.insert(pair<string,string>("IF","If"));
     m.insert(pair<string,string>("THEN","Then"));
     m.insert(pair<string,string>("ELSE","Else"));
+    m.insert(pair<string,string>("FOR","For"));
     s[len]='?';
     tmp="";
     for(int i=0;i<len;i++,tmp=""){
