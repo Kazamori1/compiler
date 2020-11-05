@@ -1,74 +1,79 @@
 #include <bits/stdc++.h>
 using namespace std;
-char s[1000005];
-string tmp;
-int len=0;
-bool isAlpha(char x){
-    return (x >= 'A' && x <= 'Z') || (x >= 'a' && x <= 'z');
-}
-bool isNum(char x){
-    return (x >= '0' && x <= '9');
-}
+int p=-1;
+int cur;
+char opg_stack [5005];
+map<char,int> stin{{'+',0},{'*',1},{'i',2},{'(',3},{')',4},{'#',5}};
+map<char,int> stout{{'+',0},{'*',1},{'i',2},{'(',3},{')',4},{'#',5}};
+int opg_martix [6][6]={{1,-1,-1,-1,1,1},{1,1,-1,-1,1,1},{1,1,100,100,1,1},{-1,-1,-1,-1,0,100},{1,1,100,100,1,1},{-1,-1,-1,-1,100,0}};
 int main(){
-    char c;
-    while((c=getchar())!=EOF){
-        s[len++]=c;
-    }
-    map<string,string> m;
-    map<string,string>::iterator iter;
-    m.insert(pair<string,string>("BEGIN","Begin"));
-    m.insert(pair<string,string>("END","End"));
-    m.insert(pair<string,string>("IF","If"));
-    m.insert(pair<string,string>("THEN","Then"));
-    m.insert(pair<string,string>("ELSE","Else"));
-    m.insert(pair<string,string>("FOR","For"));
-    s[len]='?';
-    tmp="";
-    for(int i=0;i<len;i++,tmp=""){
-        if((s[i]>=9&&s[i]<=13)||s[i]==32){
-            tmp="";
-        }else if(isAlpha(s[i])){
-            tmp+=s[i];
-            while(isAlpha(s[i+1])||isNum(s[i+1])){
-                i++;
-                tmp+=s[i];
-            }
-            iter=m.find(tmp);
-            if(iter!=m.end()){
-                cout<<iter->second<<"\n";
-            }else{
-                cout<<"Ident("<<tmp<<")"<<"\n";
-            }
-            continue;
-        }else if(isNum(s[i])){
-            tmp+=s[i];
-            while(isNum(s[i+1])){
-                i++;
-                tmp+=s[i];
-            }
-            cout<<"Int("<<stoi(tmp)<<")"<<"\n";
-            continue;
-        }else if(s[i]==':'){
-            if(s[i+1]=='='){
-                i++;
-                cout<<"Assign"<<"\n";
-            }else{
-                cout<<"Colon"<<"\n";
-            }
-        }else if(s[i]=='+'){
-            cout<<"Plus"<<"\n";
-        }else if(s[i]=='*'){
-            cout<<"Star"<<"\n";
-        }else if(s[i]==','){
-            cout<<"Comma"<<"\n";
-        }else if(s[i]=='('){
-            cout<<"LParenthesis"<<"\n";
-        }else if(s[i]==')'){
-            cout<<"RParenthesis"<<"\n";
-        }else{
-            cout<<"Unknown"<<"\n";
+    string s;
+    cin>>s;
+    opg_stack[++p]='#';
+    cur=p;
+    s.insert(s.size(),1,'#');
+    for(int i=0;i<s.size();){
+        //for(int j=0;j<=p;j++){
+          //  cout<<opg_stack[j];
+        //}
+        //cout<<s[i]<<"!"<<endl;
+        //cout<<opg_stack[p]<<"!"<<endl;
+        cur=p;
+        if(!stout.count(s[i])){
+            cout<<"E"<<endl;
             break;
+        }else{
+            int tmp=p;
+            while(opg_stack[p]=='N'){
+                p--;
+            }
+            cur=p;
+            p=tmp;
+            //cout<<opg_stack[cur]<<"!"<<s[i]<<endl;
+            if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==100){
+                cout<<"E"<<endl;
+                break;
+            }else if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==-1){
+                opg_stack[++p]=s[i];
+                //cout<<opg_stack[p]<<endl;
+                cout<<"I"<<s[i]<<endl;
+                i++;
+            }else if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==1){
+                if(cur==p&&opg_stack[cur]!='i'){
+                    //cout<<opg_stack[cur]<<endl;
+                    //cout<<s[i]<<endl;
+                    cout<<"RE"<<endl;
+                    break;
+                }else if(opg_stack[p]=='#'&&s[i]!='i'){
+                    cout<<"RE"<<endl;
+                    break;
+                }else{
+                    while(opg_stack[cur]=='N'||opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==1){
+                        if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==1&&opg_stack[cur]!='N'){
+                            //cout<<opg_stack[cur];
+                            cout<<"R"<<endl;
+                        }
+                        cur--;
+                    }
+                    p=cur+1;
+                    opg_stack[p]='N';
+                    //cout<<"R"<<endl;
+                }
+            }
+            else if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==0){
+                //cout<<"KKK"<<endl;
+                if(cur==p&&s[i]==')'){
+                    cout<<"RE"<<endl;
+                    break;
+                }else if(s[i]=='#'){
+                    //cout<<"R";
+                    break;
+                }else{
+                    p=cur+1;
+                    opg_stack[p]='N';
+                    cout<<"R"<<endl;
+                }
+            }
         }
     }
-    return 0;
 }
