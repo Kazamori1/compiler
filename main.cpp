@@ -38,7 +38,6 @@ int main(){
             }else if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==-1){
                 opg_stack[++p]=s[i];
                 //cout<<opg_stack[p]<<endl;
-                if(s[i]!=')')
                 cout<<"I"<<s[i]<<endl;
                 i++;
             }else if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==1){
@@ -72,6 +71,7 @@ int main(){
                     //cout<<"R";
                     break;
                 }else{
+                    cout<<"I"<<s[i]<<endl;
                     i++;
                     p=cur;
                     opg_stack[p]='N';
