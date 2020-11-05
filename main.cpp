@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <map>
 using namespace std;
 int p=-1;
 int cur;
@@ -31,7 +33,7 @@ int main(){
             p=tmp;
             //cout<<opg_stack[cur]<<"!"<<s[i]<<endl;
             if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==100){
-                cout<<"E"<<endl;
+                cout<<"E1"<<endl;
                 break;
             }else if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==-1){
                 opg_stack[++p]=s[i];
@@ -51,7 +53,7 @@ int main(){
                     while(opg_stack[cur]=='N'||opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==1){
                         if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==1&&opg_stack[cur]!='N'){
                             //cout<<opg_stack[cur];
-                            cout<<"R"<<endl;
+                           cout<<"R"<<endl;
                         }
                         cur--;
                     }
@@ -69,7 +71,8 @@ int main(){
                     //cout<<"R";
                     break;
                 }else{
-                    p=cur+1;
+                    i++;
+                    p=cur;
                     opg_stack[p]='N';
                     cout<<"R"<<endl;
                 }
