@@ -33,11 +33,12 @@ int main(){
             p=tmp;
             //cout<<opg_stack[cur]<<"!"<<s[i]<<endl;
             if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==100){
-                cout<<"E1"<<endl;
+                cout<<"E"<<endl;
                 break;
             }else if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==-1){
                 opg_stack[++p]=s[i];
                 //cout<<opg_stack[p]<<endl;
+                if(s[i]!=')')
                 cout<<"I"<<s[i]<<endl;
                 i++;
             }else if(opg_martix[stin[opg_stack[cur]]][stout[s[i]]]==1){
